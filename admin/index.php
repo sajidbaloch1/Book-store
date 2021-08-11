@@ -20,6 +20,14 @@
 </head>
 
 <body>
+    <?php include "../assets/data/connection.php";
+    $database  = new Database();
+    $query = "SELECT B.id AS id, B.name AS `name`, B.image AS image, B.price AS price, A.name AS 'A_name',C.name AS `C_name` FROM books B JOIN author A ON B.author_id = A.id JOIN category C ON B.category_id = C.id";
+    if (!empty($_GET['search']))
+        $query = $query . " WHERE B.name LIKE '{$_GET['search']}%'";
+    $books = $database->query($query);
+    $database->close();
+    ?>
     <!-- header start -->
 
     <header>
@@ -34,106 +42,71 @@
             </div>
         </div>
     </header>
-    <div class="container">
-        <h1>Books</h1>
-    <button class="btn btn-success float-end mt-5">Create</button>
-    </div>
+    <!-- header end -->
+    <!-- nav start -->
+    <div class="container my-3">
+    <ul class="nav justify-content-center">
+  <li class="nav-item">
+    <a class="nav-link active text-dark fs-5" aria-current="page" href="index.php">Home</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link text-dark fs-5" href="author.php">AUTHORS</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link text-dark fs-5" href="category.php">CATEGORIES</a>
+  </li>
+
+</ul>
+</div>
+<!-- nav End -->
+    <h1 class="text-center my-5">ADMIN</h1>
+    <form action="" method="get">
+        <div class="row">
+        <div class="col-6">
+        <input type="text" class="form-control bordered ms-5" name="search" value="<?php echo !empty($_GET['search']) ? $_GET['search'] : '' ?>">
+        </div>
+        <div class="col-4">
+        <button class="btn btn-success rounded">search</button>
+        </div>
+        </div>
+    </form>
     <div class="container my-5">
         <div class="row">
             <div class="col-lg-12">
-        <table class="table table-bordered text-center table-hover">
-            <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Image</th>
-                <th>Category</th>
-                <th>Author</th>
-                <th colspan="2">Action</th>
-            </tr>
-            <tr>
-            <td>1</td>
-            <td>Book1</td>
-            <td><img src="" alt="not found"></td>
-            <td>Crime</td>
-            <td>Sajid</td>
-            <td><button class="btn btn-info">Edit</button></td>
-            <td><button class="btn btn-danger">Delete</button></td>
-            </tr>
-            <tr>
-            <td>2</td>
-            <td>Book2</td>
-            <td><img src="" alt="not found"></td>
-            <td>Buiseness</td>
-            <td>Shahzad</td>
-            <td><button class="btn btn-info">Edit</button></td>
-            <td><button class="btn btn-danger">Delete</button></td>
-            </tr>
-            <tr>
-            <td>3</td>
-            <td>Book3</td>
-            <td><img src="" alt="not found"></td>
-            <td>Science</td>
-            <td>Ahmed</td>
-            <td><button class="btn btn-info">Edit</button></td>
-            <td><button class="btn btn-danger">Delete</button></td>
-            </tr>
-            <tr>
-            <td>4</td>
-            <td>Book4</td>
-            <td><img src="" alt="not found"></td>
-            <td>Education</td>
-            <td>Umair</td>
-            <td><button class="btn btn-info">Edit</button></td>
-            <td><button class="btn btn-danger">Delete</button></td>
-            </tr>
-            <tr>
-            <td>5</td>
-            <td>Book5</td>
-            <td><img src="" alt="not found"></td>
-            <td>Helthy</td>
-            <td>Rehman</td>
-            <td><button class="btn btn-info">Edit</button></td>
-            <td><button class="btn btn-danger">Delete</button></td>
-            </tr>
-            <tr>
-            <td>6</td>
-            <td>Book6</td>
-            <td><img src="" alt="not found"></td>
-            <td>History</td>
-            <td>Salman</td>
-            <td><button class="btn btn-info">Edit</button></td>
-            <td><button class="btn btn-danger">Delete</button></td>
-            </tr>
-        </table>
+                <table class="table table-bordered text-center table-hover">
+                    <tr class="bg-success text-light">
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Image</th>
+                        <th>Category</th>
+                        <th>Author</th>
+                        <th>Price</th>
+                        <th colspan="2">Action</th>
+                        <!-- <th colspan="2">Action</th> -->
+                    </tr>
+                    <?php foreach ($books as $book) {
+                    ?>
+                        <tr>
+                            <td><?= $book['id'] ?></td>
+                            <td><?= $book['name'] ?></td>
+                            <td class="text-center"><img src="<?php echo $book['image'] ?>" height="30px" width="30px" alt=""></td>
+                            <td><?= $book['C_name'] ?></td>
+                            <td><?= $book['A_name'] ?></td>
+                            <td class="ps-4"><?= $book['price'] ?></td>
+                            <td> <a href="update.php?id=<?= $book['id'] ?>"> <button class="btn btn-primary">Update</button> </a></td>
+                            <form action="delete.php" method="post">
+                                <input type="hidden" name="id" value="<?php echo $book['id'] ?>">
+                                <td><button class="btn btn-dark">Delete</button></td>
+                            </form>
+                        </tr>
+                    <?php  } ?>
+                </table>
             </div>
         </div>
     </div>
-    <!-- header end -->
-    <!-- nav start -->
-    <!-- <div class="container my-3">
-    <ul class="nav justify-content-center">
-  <li class="nav-item">
-    <a class="nav-link active text-dark fs-5" aria-current="page" href="../../index.php">Home</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link text-dark fs-5" href="../../product.php">Product</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link text-dark fs-5" href="../../about-us.php">About Us</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link text-dark fs-5" href="../../contact-us.php">Contact Us</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link text-dark fs-5" href="../../login.php">Login</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link text-dark fs-5" href="../../signup.php">Sign Up</a>
-  </li>
-</ul>
-</div> -->
-    <!-- nav End -->
-
+    <div class="text-center">
+        <a href="create.php"> <button class="btn btn-success btn-lg  mb-5">Create</button></a>
+    </div>
 </body>
 
 </html>
