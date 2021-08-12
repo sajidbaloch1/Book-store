@@ -1,4 +1,14 @@
-<?php include "assets/layouts/header.php" ?>
+<?php include "assets/layouts/header.php"?>
+<?php include "assets/data/connection.php";
+
+$query = "SELECT B.id AS id, C.id AS C_id , B.name AS `name`, B.image AS image, B.price AS price, A.name AS 'A_name',C.name AS `C_name` FROM books B JOIN author A ON B.author_id = A.id JOIN category C ON B.category_id = C.id";
+$database = new Database();
+$books = $database->query($query);
+$query = "SELECT * FROM category";
+$category = $database->query($query);
+$query = "SELECT * FROM author";
+$author = $database->query($query);
+?>
 <!-- slider Start -->
 
 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
@@ -20,95 +30,57 @@
     </div>
 </div>
 
+<h1 class="text-center my-5">PRODUCTS</h1>
 <div class="container-fluid my-5">
-    <h1 class="text-center">PRODUCTS</h1>
     <div class="row">
-        <div  class="col-lg-6 mt-5">
-        <select class="form-select" aria-label="form-select-lg example">
-  <option selected>Open this select Book Categoty</option>
-  <option value="1">One</option>
-  <option value="2">Two</option>
-  <option value="3">Three</option>
+       <form action="" method="get" id="filter_form">
+          <div  class="col-lg-6 mt-5">
+        <select class="form-select" id="category" name="category" aria-label="form-select-lg example">
+          <option>Open this select Book Categoty</option>
+          <?php foreach($category as $cat){?>
+  <option <?php $_GET['category'] == $cat['id'] ? 'Selected' : '' ?> value="<?= $cat['id']?>"><?= $cat['name']?></option>
+  <?php }?>
 </select>
         </div>
         <div  class="col-lg-6 mt-5">
-        <select class="form-select" aria-label="form-select-lg example">
-  <option selected>Open this select Author</option>
-  <option value="1">One</option>
-  <option value="2">Two</option>
-  <option value="3">Three</option>
+        <select class="form-select" id="author" name="author" aria-label="form-select-lg example">
+          <option>Open this select Author</option>
+          <?php foreach($author as $aut){?>
+  <option value="<?= $aut['id']?>"><?= $aut['name']?></option>
+    <?php }?>
 </select>
         </div>
+        </form>
     </div>
 </div>
 <div class="container my-5">
     <div class="row">
-        <div class="col-lg-4">
-        <div class="card">
-  <img src="assets/img/category/c1.jpg" class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title text-center">Hobbies</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="/assets/Products/Product1.php" class="btn btn-primary">Add To Cart</a>
-  </div>
-</div>
-        </div>
-        <div class="col-lg-4">
-        <div class="card">
-  <img src="assets/img/category/b1.jpg" class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title text-center">Science</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="/assets/Products/Product2.php" class="btn btn-primary">Add To Cart</a>
-  </div>
-</div>
-        </div>
-        <div class="col-lg-4">
-        <div class="card">
-  <img src="assets/img/category/a1.jpg" class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title text-center">Education</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="/assets/Products/Product3.php" class="btn btn-primary">Add To Cart</a>
-  </div>
-</div>
-        </div>
+
+      <?php
+      foreach ($books as $book) { ?>
+
+          <div class="col-lg-3 my-2 ps-5">
+            <img src="<?= $book['image'] ?>" class="card-img-top p-3" style="height: 300px; width: 200px;" alt="...">
+            <!-- <div class="card-body"> -->
+            <h6 class="card-title ms-3"><?= $book['name'] ?></h6>
+            <p class="card-text ms-3">Category: <?= $book['C_name']?>
+              <br>Price:<span class="text-danger ms-5"><?= $book['price'] ?></span>
+            </p>
+            <button class="btn btn-primary ms-3">ADD TO CART</button>
+            <!-- </div> -->
+          </div>
+      <?php
         
+      } ?>
     </div>
-</div>
-<div class="container my-5">
-    <div class="row">
-        <div class="col-lg-4">
-        <div class="card">
-  <img src="assets/img/category/d1.jpg" class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title text-center">History</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="/assets/Products/Product4.php" class="btn btn-primary">Add To Cart</a>
   </div>
-</div>
-        </div>
-        <div class="col-lg-4">
-        <div class="card">
-  <img src="assets/img/category/e1.jpg" class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title text-center">Health</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="/assets/Products/Product5.php" class="btn btn-primary">Add TO Cart</a>
-  </div>
-</div>
-        </div>
-        <div class="col-lg-4">
-        <div class="card">
-  <img src="assets/img/category/f1.jpg" class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title text-center">Crime</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="/assets/Products/Product6.php" class="btn btn-primary">Add To Cart</a>
-  </div>
-</div>
-        </div>
-        
-    </div>
-</div>
+
+  <script>
+    $('#category').change(function(){
+      $('#filter_form').submit();
+    })
+    $('#author').change(function(){
+      $('#filter_form').submit();
+    })
+  </script>
 <?php include "assets/layouts/footer.php" ?>
