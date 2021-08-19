@@ -22,7 +22,11 @@
 <body>
     <?php include "../assets/data/connection.php";
     $database  = new Database();
-    $query = "SELECT B.id AS id, B.name AS `name`, B.image AS image, B.price AS price, A.name AS 'A_name',C.name AS `C_name` FROM books B JOIN author A ON B.author_id = A.id JOIN category C ON B.category_id = C.id";
+ $query = "SELECT B.id AS id, B.name AS `name`, B.image AS image, B.price AS price, A.name AS 'A_name',C.name AS `C_name`, O.total_amount AS total_amount, OI.quantity AS quantity 
+    FROM orders O JOIN order_item OI ON O.id = OI.order_id 
+    JOIN books B ON OI.book_id = B.id
+    JOIN category C ON B.category_id = C.id
+    JOIN author A ON A.id = B.author_id";
     if (!empty($_GET['search']))
         $query = $query . " WHERE B.name LIKE '{$_GET['search']}%'";
     $books = $database->query($query);
@@ -55,15 +59,9 @@
   <li class="nav-item">
     <a class="nav-link text-dark fs-5" href="category.php">CATEGORIES</a>
   </li>
-  <li class="nav-item">
-    <a class="nav-link text-dark fs-5" href="orders.php">ORDERS</a>
-  </li>
   <?php if(empty($_SESSION['user'])){?>
   <li class="nav-item">
     <a class="nav-link text-dark fs-5" href="../logout.php">LOGOUT</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link text-dark fs-5" href="../myorders.php">My Order</a>
   </li>
  <?php } ?>
 </ul>
@@ -90,6 +88,8 @@
                         <th>Image</th>
                         <th>Category</th>
                         <th>Author</th>
+                        <th>Total Amount</th>
+                        <th>Total Qty</th>
                         <th>Price</th>
                         <th colspan="2">Action</th>
                         <!-- <th colspan="2">Action</th> -->
@@ -102,6 +102,8 @@
                             <td class="text-center"><img src="<?php echo $book['image'] ?>" height="30px" width="30px" alt=""></td>
                             <td><?= $book['C_name'] ?></td>
                             <td><?= $book['A_name'] ?></td>
+                            <td><?= $book['total_amount']?></td>
+                            <td><?= $book['quantity']?></td>
                             <td class="ps-4"><?= $book['price'] ?></td>
                             <td> <a href="update.php?id=<?= $book['id'] ?>"> <button class="btn btn-primary">Update</button> </a></td>
                             <form action="delete.php" method="post">

@@ -13,7 +13,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-   <style>
+    <style>
         header {
             background: rgb(2, 0, 36);
             background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(20, 20, 20, 0.9640231092436975) 35%, rgba(0, 212, 255, 1) 100%);
@@ -26,13 +26,13 @@
     <?php include "../assets/data/connection.php";
     $database  = new Database();
     $query = "SELECT * FROM category";
-    if(!empty($_GET['search']))
-    $query = $query . " WHERE name LIKE '{$_GET['search']}%'";
+    if (!empty($_GET['search']))
+        $query = $query . " WHERE name LIKE '{$_GET['search']}%'";
     $category = $database->query($query);
 
-    if(isset($_GET['id']) && !empty($_GET['id'])){
+    if (isset($_GET['id']) && !empty($_GET['id'])) {
         $query = "SELECT * FROM category WHERE id = {$_GET['id']}";
-        $result =$database->query($query); 
+        $result = $database->query($query);
     }
 
     $database->close();
@@ -52,34 +52,34 @@
         </div>
     </header>
     <!-- header end -->
-        <!-- nav start -->
-        <div class="container my-3">
-    <ul class="nav justify-content-center">
-  <li class="nav-item">
-    <a class="nav-link active text-dark fs-5" aria-current="page" href="index.php">Home</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link text-dark fs-5" href="author.php">AUTHORS</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link text-dark fs-5" href="category.php">CATEGORIES</a>
-  </li>
+    <!-- nav start -->
+    <div class="container my-3">
+        <ul class="nav justify-content-center">
+            <li class="nav-item">
+                <a class="nav-link active text-dark fs-5" aria-current="page" href="index.php">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark fs-5" href="author.php">AUTHORS</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark fs-5" href="category.php">CATEGORIES</a>
+            </li>
 
-</ul>
-</div>
-<!-- nav End -->
-<h1 class="text-center">CATEGORIES</h1>
-<form action="" method="GET">
-    <div class="row mt-5">
-        <div class="col-6">
-            <input type="text" name="search" class="form-control ms-5" value="<?php echo !empty($_GET['search']) ? $_GET['search'] : ''?>">
-        </div>
-        <div class="col-4">
-            <button class="btn btn-success">Search</button>
-        </div>
+        </ul>
     </div>
-</form>
-        <a href="" onclick="create()" class="btn btn-success mt-5">Create</a>
+    <!-- nav End -->
+    <h1 class="text-center">CATEGORIES</h1>
+    <form action="" method="GET">
+        <div class="row mt-5">
+            <div class="col-6">
+                <input type="text" name="search" class="form-control ms-5" value="<?php echo !empty($_GET['search']) ? $_GET['search'] : '' ?>">
+            </div>
+            <div class="col-4">
+                <button class="btn btn-success">Search</button>
+            </div>
+        </div>
+    </form>
+    <a href="" onclick="create()" class="btn btn-success mt-5">Create</a>
     <div class="container my-5">
         <div class="row">
             <table class="table table-bordered text-center table-hover">
@@ -88,42 +88,43 @@
                     <th>Name</th>
                     <th colspan="2">Action</th>
                 </tr>
-                    <?php foreach($category as $cat){
-                        ?>
-                <tr>
-                    <td><?php echo $cat['id']?></td>
-                    <td><?php echo $cat['name']?></td>
-                <td>
-                    <form action="" method="GET">
-                        <input type="hidden" name="id" value="<?= $cat['id']?>">
-                        <button class="btn btn-primary">Update</button>
-                    </form>
-                </td>
-                <form action="del-cat.php" method="POST">
-                    <input type="hidden" name="id" value="<?php echo $cat['id']?>">
-                <td><button class="btn btn-dark">Delete</button></td></form>
-                </tr>
-                <?php }?>
+                <?php foreach ($category as $cat) {
+                ?>
+                    <tr>
+                        <td><?php echo $cat['id'] ?></td>
+                        <td><?php echo $cat['name'] ?></td>
+                        <td>
+                            <form action="" method="GET">
+                                <input type="hidden" name="id" value="<?= $cat['id'] ?>">
+                                <button class="btn btn-primary">Update</button>
+                            </form>
+                        </td>
+                        <form action="del-cat.php" method="POST">
+                            <input type="hidden" name="id" value="<?php echo $cat['id'] ?>">
+                            <td><button class="btn btn-dark">Delete</button></td>
+                        </form>
+                    </tr>
+                <?php } ?>
                 <table class="table table-bordered" id="create">
-                <tr>
-                    <form action="cat-crepos.php" method="POST">
-                    <td></td>
-                    <td><input type="text" name="name" class="form-control"></td>
-                    <td><input type="submit" class="btn btn-primary" value="Submit"></td>
-                    </form>
-                </tr>
+                    <tr>
+                        <form action="cat-crepos.php" method="POST">
+                            <td></td>
+                            <td><input type="text" name="name" class="form-control"></td>
+                            <td><input type="submit" class="btn btn-primary" value="Submit"></td>
+                        </form>
+                    </tr>
                 </table>
             </table>
         </div>
     </div>
-    <?php if(isset($_GET['id']) && !empty($_GET['id'])){
-        ?>
-    <script>
-        $(document).ready(function(){
-            $("#exampleModal").modal("show")
-        })
-    </script>
-    <?php }?>
+    <?php if (isset($_GET['id']) && !empty($_GET['id'])) {
+    ?>
+        <script>
+            $(document).ready(function() {
+                $("#exampleModal").modal("show")
+            })
+        </script>
+    <?php } ?>
     <div class="modal fade" id="exampleModal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -147,9 +148,9 @@
         </div>
     </div>
     <script>
-function create(){
-    document.getElementById('create').style.display = 'block';
-}
+        function create() {
+            document.getElementById('create').style.display = 'block';
+        }
     </script>
 </body>
 

@@ -1,3 +1,4 @@
+<?php session_start()?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,12 +43,19 @@
   <li class="nav-item">
     <a class="nav-link text-dark fs-5" href="../../contact-us.php">Contact Us</a>
   </li>
+  <?php if(empty($_SESSION['user'])){ ?>
+
   <li class="nav-item">
     <a class="nav-link text-dark fs-5" href="../../login.php">Login</a>
   </li>
   <li class="nav-item">
     <a class="nav-link text-dark fs-5" href="../../signup.php">Sign Up</a>
   </li>
+    <?php }else{?>
+    <li class="nav-item">
+    <a class="nav-link text-dark fs-5" href="../../logout.php">LOG OUT</a>
+  </li>
+  <?php }?>
 </ul>
 </div>
 <!-- nav End -->

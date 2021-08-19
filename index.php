@@ -1,5 +1,5 @@
-<?php include "assets/layouts/header.php" ?>
-<?php include "assets/data/connection.php";
+<?php include "assets/layouts/header.php";
+include "assets/data/connection.php";
 $query = "SELECT B.id AS id, C.id AS C_id , B.name AS `name`, B.image AS image, B.price AS price, A.name AS 'A_name',C.name AS `C_name` FROM books B JOIN author A ON B.author_id = A.id JOIN category C ON B.category_id = C.id";
 $database = new Database();
 $books = $database->query($query);
@@ -38,21 +38,34 @@ $database->close();
 
       <?php
       foreach ($books as $book) {
-        if ($cat['id'] === $book['C_id'])   {
+        if ($cat['id'] === $book['C_id']) {
           $count++;  ?>
 
-          <div class="col-lg-3 my-2 ps-5">
-            <img src="<?= $book['image'] ?>" class="card-img-top p-3" style="height: 300px; width: 200px;" alt="...">
-            <!-- <div class="card-body"> -->
-            <h6 class="card-title ms-3"><?= $book['name'] ?></h6>
-            <p class="card-text ms-3">Category: <?= $cat['name'] ?>
-              <br>Price:<span class="text-danger ms-5"><?= $book['price'] ?></span>
-            </p>
-            <button class="btn btn-primary ms-3">ADD TO CART</button>
+          <div class="col-lg-3 col-md-3 col-sm-6 col-6 my-2 ps-5">
+            <a href="Product1.php?id=<?php echo $book['id'] ?>" style="text-decoration: none; color: black ;">
+              <img src="<?= $book['image'] ?>" class="card-img-top p-3" style="height: 300px; width: 200px;" alt="...">
+              <!-- <div class="card-body"> -->
+              <h6 class="card-title ms-3"><?= $book['name'] ?></h6>
+              <p class="card-text ms-3">Category: <?= $cat['name'] ?>
+                <br>Price:<span class="text-danger ms-5"><?= $book['price'] ?></span>
+              </p>
+            </a>
+            <form action="cart-post.php" method="POST">
+              <input type="number" name="quantity" class="text-center input-outline-dark form-control-sm" value="1">
+              <button class="btn btn-primary ms-3">ADD TO CART</button>
+              <input type="hidden" name="id" value="<?php echo $book['id'] ?>">
+              <input type="hidden" name="image" value="<?php echo $book['image'] ?>">
+              <input type="hidden" name="name" value="<?php echo $book['name'] ?>">
+              <input type="hidden" name="category" value="<?php echo $book['C_name'] ?>">
+              <input type="hidden" name="author" value="<?php echo $book['A_name'] ?>">
+              <input type="hidden" name="price" value="<?php echo $book['price'] ?>">
+            </form>
+
             <!-- </div> -->
           </div>
       <?php
-        }if($count == 4){
+        }
+        if ($count == 4) {
           $count = 0;
           break;
         }
