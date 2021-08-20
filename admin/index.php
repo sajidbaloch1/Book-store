@@ -62,9 +62,9 @@
   <li class="nav-item">
     <a class="nav-link text-dark fs-5" href="../logout.php">LOGOUT</a>
   </li>
-  <li class="nav-item">
-    <a class="nav-link text-dark fs-5" href="../myorders.php">My Order</a>
-  </li>
+  <!-- <li class="nav-item">
+    <a class="nav-link text-dark fs-5" href="../my">My Order</a>
+  </li> -->
  <?php } ?>
 </ul>
 </div>

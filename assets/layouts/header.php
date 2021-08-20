@@ -55,6 +55,9 @@
     <li class="nav-item">
     <a class="nav-link text-dark fs-5" href="../../logout.php">LOG OUT</a>
   </li>
+  <li class="nav-item">
+    <a class="nav-link text-dark fs-5" href="../../my-orders.php">MY ORDERS</a>
+  </li>
   <?php }?>
 </ul>
 </div>

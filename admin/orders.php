@@ -22,11 +22,13 @@
 <body>
     <?php include "../assets/data/connection.php";
     $database  = new Database();
- $query = "SELECT B.id AS id, B.name AS `name`, B.image AS image, B.price AS price, A.name AS 'A_name',C.name AS `C_name`, O.total_amount AS total_amount, OI.quantity AS quantity 
+ $query = "SELECT B.id AS id, B.name AS `name`, B.image AS image,U.name AS U_name, B.price AS price, A.name AS 'A_name',C.name AS `C_name`, O.total_amount AS total_amount, OI.quantity AS quantity 
     FROM orders O JOIN order_item OI ON O.id = OI.order_id 
     JOIN books B ON OI.book_id = B.id
     JOIN category C ON B.category_id = C.id
-    JOIN author A ON A.id = B.author_id";
+    JOIN author A ON A.id = B.author_id
+    JOIN users U ON O.user_id = U.id
+    ";
     if (!empty($_GET['search']))
         $query = $query . " WHERE B.name LIKE '{$_GET['search']}%'";
     $books = $database->query($query);
@@ -84,7 +86,8 @@
                 <table class="table table-bordered text-center table-hover">
                     <tr class="bg-success text-light">
                         <th>#</th>
-                        <th>Name</th>
+                        <th>User Name</th>
+                        <th>B-Name</th>
                         <th>Image</th>
                         <th>Category</th>
                         <th>Author</th>
@@ -98,6 +101,7 @@
                     ?>
                         <tr>
                             <td><?= $book['id'] ?></td>
+                            <td><?= $book['U_name']?></td>
                             <td><?= $book['name'] ?></td>
                             <td class="text-center"><img src="<?php echo $book['image'] ?>" height="30px" width="30px" alt=""></td>
                             <td><?= $book['C_name'] ?></td>

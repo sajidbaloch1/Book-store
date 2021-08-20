@@ -79,10 +79,17 @@
             </div>
         </div>
     </form>
-    <a href="" onclick="create()" class="btn btn-success mt-5">Create</a>
+    <button onclick="create()" class="btn btn-success mt-5">Create</button>
     <div class="container my-5">
         <div class="row">
             <table class="table table-bordered text-center table-hover">
+            <tr id="create" style="display: none;">
+                        <form action="cat-crepos.php" method="POST">
+                            <td></td>
+                            <td><input type="text" name="name" class="form-control"></td>
+                            <td><input type="submit" class="btn btn-primary" value="Submit"></td>
+                        </form>
+                    </tr>
                 <tr>
                     <th>#</th>
                     <th>Name</th>
@@ -105,16 +112,10 @@
                         </form>
                     </tr>
                 <?php } ?>
-                <table class="table table-bordered" id="create">
-                    <tr>
-                        <form action="cat-crepos.php" method="POST">
-                            <td></td>
-                            <td><input type="text" name="name" class="form-control"></td>
-                            <td><input type="submit" class="btn btn-primary" value="Submit"></td>
-                        </form>
-                    </tr>
+               
+
                 </table>
-            </table>
+            
         </div>
     </div>
     <?php if (isset($_GET['id']) && !empty($_GET['id'])) {
@@ -149,7 +150,7 @@
     </div>
     <script>
         function create() {
-            document.getElementById('create').style.display = 'block';
+            document.getElementById('create').style.display = '';
         }
     </script>
 </body>

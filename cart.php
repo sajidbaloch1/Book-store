@@ -50,6 +50,7 @@
                     <form action="order.php" method="POST">
                         <a ><input type="submit" class="btn btn-success rounded" value="Order Now"></a>
                         <input type="hidden" name="total_Amount" value="<?= $totalPrice?>">
+                        <input type="hidden" name="total_item" value="<?= $totalItems?>">
                     </form>
                 </div>
             </div>
