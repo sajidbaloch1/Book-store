@@ -1,11 +1,20 @@
-<?php include "../layouts/header.php"?>
+<?php include "assets/layouts/header.php"?>
+<?php include "assets/data/connection.php";
+$query = "SELECT B.id AS id, C.id AS C_id , B.name AS `name`,B.description AS `description` , B.image AS image, B.price AS price, A.name AS 'A_name',C.name AS `C_name` FROM books B JOIN author A ON B.author_id = A.id JOIN category C ON B.category_id = C.id WHERE B.id = {$_GET['id']}";
+$database = new Database();
+$books = $database->query($query);
+?>
+
+
 <section class="text-gray-600 body-font overflow-hidden">
+  <?php foreach($books as $book){?>
   <div class="container px-5 py-24 mx-auto">
     <div class="lg:w-4/5 mx-auto flex flex-wrap">
-      <img alt="ecommerce" class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded" src="../img/category/f1.jpg">
+      <img alt="ecommerce" style="width: 400px; height: 500px;" class="rounded" src="<?= $book['image']?>">
       <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
-        <h2 class="text-sm title-font text-gray-500 tracking-widest">BRAND NAME</h2>
-        <h1 class="text-gray-900 text-3xl title-font font-medium mb-1">The Catcher in the Rye</h1>
+        <h2 class="text-sm title-font text-gray-500 tracking-widest">BOOK NAME</h2>
+        <h1 class="text-gray-900 text-3xl title-font font-medium mb-1"><?= $book['name']?> 
+      <br> <span class="text-danger">BY</span> <?= $book['A_name']?> </h1>
         <div class="flex mb-4">
           <span class="flex items-center">
             <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 text-indigo-500" viewBox="0 0 24 24">
@@ -43,17 +52,24 @@
             </a>
           </span>
         </div>
-        <p class="leading-relaxed">Fam locavore kickstarter distillery. Mixtape chillwave tumeric sriracha taximy chia microdosing tilde DIY. XOXO fam indxgo juiceramps cornhole raw denim forage brooklyn. Everyday carry +1 seitan poutine tumeric. Gastropub blue bottle austin listicle pour-over, neutra jean shorts keytar banjo tattooed umami cardigan.</p>
-        <div class="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
-         
+        <p class="leading-relaxed"><?= $book['description']?></p>
         
-            <input type="number" class="form-control" placeholder="how much">
-        </div>
-        <div class="flex">
-          <span class="title-font font-medium text-2xl text-gray-900">$58.00</span><br>
+        <div class="flex mt-5">
+        <form action="cart-post.php" method="POST">
+                <input type="number" name="quantity" class="text-center input-outline-dark form-control-sm" value="1">
+                <button class="btn btn-primary ms-3">ADD TO CART</button>
+                <input type="hidden" name="id" value="<?php echo $book['id'] ?>">
+                <input type="hidden" name="image" value="<?php echo $book['image'] ?>">
+                <input type="hidden" name="name" value="<?php echo $book['name'] ?>">
+                <input type="hidden" name="category" value="<?php echo $book['C_name'] ?>">
+                <input type="hidden" name="author" value="<?php echo $book['A_name'] ?>">
+                <input type="hidden" name="price" value="<?php echo $book['price'] ?>">
+              </form> 
+          <span class="title-font font-medium text-2xl text-gray-900 ms-5">RS <?= $book['price']?></span><br>
         </div>
       </div>
     </div>
   </div>
+  <?php }?>
 </section>
-<?php include "../layouts/footer.php"?>
+<?php include "assets/layouts/footer.php"?>
